@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="user_export_log_tree" model="ir.ui.view">
+        <field name="name">user.export.log.tree</field>
+        <field name="model">user.export.log</field>
+        <field name="arch" type="xml">
+            <tree string="Export History">
+                <field name="name"/>
+                <field name="export_date"/>
+                <field name="exported_by"/>
+                <field name="user_count"/>
+                <field name="file_type"/>
+                <field name="file_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="user_export_log_form" model="ir.ui.view">
+        <field name="name">user.export.log.form</field>
+        <field name="model">user.export.log</field>
+        <field name="arch" type="xml">
+            <form string="Export Log">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="export_date"/>
+                            <field name="exported_by"/>
+                            <field name="file_type"/>
+                        </group>
+                        <group>
+                            <field name="user_count"/>
+                            <field name="file_name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="user_export_log_search" model="ir.ui.view">
+        <field name="name">user.export.log.search</field>
+        <field name="model">user.export.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Export Logs">
+                <field name="name"/>
+                <field name="exported_by"/>
+                <field name="file_name"/>
+                <filter string="Today" name="today" 
+                        domain="[('export_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
+                                ('export_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="This Week" name="this_week" 
+                        domain="[('export_date', '&gt;=', (datetime.datetime.now() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="this_month" 
+                        domain="[('export_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-01'))]"/>
+                <separator/>
+                <filter string="CSV" name="csv" domain="[('file_type', '=', 'csv')]"/>
+                <filter string="Excel" name="excel" domain="[('file_type', '=', 'excel')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Exported By" name="group_by_user" context="{'group_by': 'exported_by'}"/>
+                    <filter string="Export Date" name="group_by_date" context="{'group_by': 'export_date:month'}"/>
+                    <filter string="File Type" name="group_by_type" context="{'group_by': 'file_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_user_export_log" model="ir.actions.act_window">
+        <field name="name">Export History</field>
+        <field name="res_model">user.export.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="user_export_log_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No export history yet
+            </p>
+            <p>
+                Click on "Export Users" menu to start exporting user data.
+            </p>
+        </field>
+    </record>
+</odoo>

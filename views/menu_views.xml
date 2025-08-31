@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_user_export_root"
+              name="User Export"
+              sequence="100"
+              web_icon="user_export,static/description/icon.png"/>
+    
+    <!-- Sub Menu -->
+    <menuitem id="menu_user_export_wizard"
+              name="Export Users"
+              parent="menu_user_export_root"
+              action="action_user_export_wizard"
+              sequence="10"/>
+
+    <menuitem id="menu_user_export_history"
+              name="Export History"
+              parent="menu_user_export_root"
+              action="action_user_export_log"
+              sequence="20"/>
+
+    <!-- Add to Settings menu -->
+    <menuitem id="menu_user_export_settings"
+              name="Export Users"
+              parent="base.menu_administration"
+              action="action_user_export_wizard"
+              sequence="100"/>
+</odoo>

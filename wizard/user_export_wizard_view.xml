@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="user_export_wizard_form" model="ir.ui.view">
+        <field name="name">user.export.wizard.form</field>
+        <field name="model">user.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Users">
+                <sheet>
+                    <group>
+                        <group string="Export Settings">
+                            <field name="name"/>
+                            <field name="export_type"/>
+                            <field name="group_ids" widget="many2many_tags" 
+                                   attrs="{'invisible': [('export_type', '!=', 'by_groups')], 'required': [('export_type', '=', 'by_groups')]}"/>
+                            <field name="team_ids" widget="many2many_tags" 
+                                   attrs="{'invisible': [('export_type', '!=', 'by_teams')], 'required': [('export_type', '=', 'by_teams')]}"/>
+                            <field name="file_type"/>
+                        </group>
+                        <group string="Fields to Export">
+                            <field name="include_login"/>
+                            <field name="include_email"/>
+                            <field name="include_phone"/>
+                            <field name="include_company"/>
+                            <field name="include_department"/>
+                            <field name="include_groups"/>
+                            <field name="include_last_login"/>
+                        </group>
+                    </group>
+                    
+                    <group attrs="{'invisible': [('file_data', '=', False)]}">
+                        <field name="file_data" filename="file_name" widget="binary"/>
+                        <field name="file_name" invisible="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_export" string="Export" type="object" class="btn-primary" 
+                            attrs="{'invisible': [('file_data', '!=', False)]}"/>
+                    <button name="download_file" string="Download" type="object" class="btn-primary" 
+                            attrs="{'invisible': [('file_data', '=', False)]}"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_user_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export Users</field>
+        <field name="res_model">user.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
